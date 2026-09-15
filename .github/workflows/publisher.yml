@@ -20,6 +20,7 @@ jobs:
       API_MANAGEMENT_SERVICE_NAME: "apim-dest-migration-prem"
       API_MANAGEMENT_ENVIRONMENT: "test"
       TARGET_WORKSPACE_NAME: "workspace-core-services"
+      TARGET_API_NAME: ${{ github.event.inputs.target_api }}
     secrets:
       AZURE_CLIENT_ID: "${{ secrets.APIM_MIGRATION_CLIENT_ID }}"
       AZURE_CLIENT_SECRET: "${{ secrets.APIM_MIGRATION_CLIENT_SECRET }}"

@@ -32,6 +32,11 @@ on:
         required: false
         type: string
         default: ""
+      TARGET_API_NAME:
+        description: "When the extracted artifacts folder contains more than one API, prune it down to just this API before publishing. Leave empty to publish everything found."
+        required: false
+        type: string
+        default: ""
     secrets:
       AZURE_CLIENT_ID:
         required: true
@@ -52,6 +57,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
+
+      - name: Filter artifacts down to target API
+        if: ${{ inputs.TARGET_API_NAME != '' }}
+        shell: pwsh
+        run: |
+          ./scripts/filter-artifacts-for-api.ps1 `
+            -ArtifactsRootPath "${{ GITHUB.WORKSPACE }}/${{ inputs.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}" `
+            -TargetApiName "${{ inputs.TARGET_API_NAME }}"
 
       # Run Spectral
       - uses: actions/setup-node@v4
