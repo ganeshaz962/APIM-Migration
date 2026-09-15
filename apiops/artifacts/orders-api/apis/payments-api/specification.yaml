@@ -14,13 +14,13 @@ paths:
       responses:
         '200':
           description: Payment history retrieved
-  '/{id}':
+  '/{paymentId}':
     get:
       summary: Get Payment By ID
       description: Fetch payment status by transaction ID
       operationId: get-payment-by-id
       parameters:
-        - name: id
+        - name: paymentId
           in: path
           description: ''
           required: true

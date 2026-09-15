@@ -21,13 +21,13 @@ paths:
       responses:
         '201':
           description: Order created successfully
-  '/{id}':
+  '/{orderId}':
     get:
       summary: Get Order By ID
       description: Fetch order details by order ID
       operationId: get-order-by-id
       parameters:
-        - name: id
+        - name: orderId
           in: path
           description: ''
           required: true
