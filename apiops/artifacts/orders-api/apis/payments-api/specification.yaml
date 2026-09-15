@@ -1,0 +1,52 @@
+openapi: 3.0.1
+info:
+  title: Payments Gateway API
+  description: Payments transaction API service
+  version: '1.0'
+servers:
+  - url: https://apim-source-prem-mig-01.azure-api.net/payments
+paths:
+  /:
+    get:
+      summary: Get Payments History
+      description: Retrieve transaction payments
+      operationId: get-payments
+      responses:
+        '200':
+          description: Payment history retrieved
+  '/{paymentId}':
+    get:
+      summary: Get Payment By ID
+      description: Fetch payment status by transaction ID
+      operationId: get-payment-by-id
+      parameters:
+        - name: paymentId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment transaction status
+  /process:
+    post:
+      summary: Process Payment
+      description: Submit a payment charge
+      operationId: process-payment
+      responses:
+        '200':
+          description: Payment processed successfully
+components:
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+security:
+  - apiKeyHeader: [ ]
+  - apiKeyQuery: [ ]

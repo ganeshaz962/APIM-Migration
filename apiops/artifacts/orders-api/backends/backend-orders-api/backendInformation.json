@@ -1,0 +1,11 @@
+{
+  "properties": {
+    "description": "Dedicated Backend for Orders Service API",
+    "protocol": "http",
+    "tls": {
+      "validateCertificateChain": true,
+      "validateCertificateName": true
+    },
+    "url": "https://orders-service.internal.contoso.com/api"
+  }
+}
