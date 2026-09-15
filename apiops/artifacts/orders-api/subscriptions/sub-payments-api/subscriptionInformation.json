@@ -1,0 +1,8 @@
+{
+  "properties": {
+    "displayName": "Payments API Client Subscription",
+    "scope": "/subscriptions/874a43ac-9423-4b7e-b030-b6023db7be8b/resourceGroups/rg-apim-source-migration/providers/Microsoft.ApiManagement/service/apim-source-prem-mig-01/products/payments-product",
+    "allowTracing": false,
+    "state": "active"
+  }
+}

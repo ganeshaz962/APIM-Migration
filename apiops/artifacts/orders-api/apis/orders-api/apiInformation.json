@@ -1,0 +1,21 @@
+{
+  "properties": {
+    "path": "orders",
+    "apiRevision": "1",
+    "apiRevisionDescription": "",
+    "apiVersionDescription": "",
+    "authenticationSettings": {},
+    "description": "Orders management API service",
+    "isCurrent": true,
+    "displayName": "Orders Service API",
+    "protocols": [
+      "https"
+    ],
+    "serviceUrl": "https://orders-service.internal.contoso.com/api",
+    "subscriptionKeyParameterNames": {
+      "header": "Ocp-Apim-Subscription-Key",
+      "query": "subscription-key"
+    },
+    "subscriptionRequired": true
+  }
+}
