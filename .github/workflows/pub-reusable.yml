@@ -60,6 +60,12 @@ jobs:
       - run: npm install -g @stoplight/spectral-cli
       - run: spectral lint "${{ GITHUB.WORKSPACE }}/${{ inputs.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}/apis/**/*.{json,yml,yaml}" --ruleset https://raw.githubusercontent.com/connectedcircuits/devops-api-linter/main/rules.yaml
 
+      - name: Remove built-in system groups from artifacts
+        shell: pwsh
+        run: |
+          ./scripts/remove-system-groups.ps1 `
+            -ArtifactsRootPath "${{ GITHUB.WORKSPACE }}/${{ inputs.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}"
+
       - name: Nest artifacts under destination workspace
         if: ${{ inputs.TARGET_WORKSPACE_NAME != '' }}
         shell: pwsh
