@@ -55,11 +55,11 @@ resource "azurerm_api_management_api_operation" "get_order_by_id" {
   resource_group_name = azurerm_resource_group.source_rg.name
   display_name        = "Get Order By ID"
   method              = "GET"
-  url_template        = "/{id}"
+  url_template        = "/{orderId}"
   description         = "Fetch order details by order ID"
 
   template_parameter {
-    name     = "id"
+    name     = "orderId"
     type     = "string"
     required = true
   }
@@ -141,11 +141,11 @@ resource "azurerm_api_management_api_operation" "get_payment_by_id" {
   resource_group_name = azurerm_resource_group.source_rg.name
   display_name        = "Get Payment By ID"
   method              = "GET"
-  url_template        = "/{id}"
+  url_template        = "/{paymentId}"
   description         = "Fetch payment status by transaction ID"
 
   template_parameter {
-    name     = "id"
+    name     = "paymentId"
     type     = "string"
     required = true
   }
