@@ -1,0 +1,51 @@
+openapi: 3.0.1
+info:
+  title: Orders Service API
+  description: Orders management API service
+  version: '1.0'
+servers:
+  - url: https://apim-source-prem-mig-01.azure-api.net/orders
+paths:
+  /:
+    get:
+      summary: Get All Orders
+      description: Retrieve all orders
+      operationId: get-orders
+      responses:
+        '200':
+          description: Successful list of orders
+    post:
+      summary: Create Order
+      description: Create a new order record
+      operationId: create-order
+      responses:
+        '201':
+          description: Order created successfully
+  '/{orderId}':
+    get:
+      summary: Get Order By ID
+      description: Fetch order details by order ID
+      operationId: get-order-by-id
+      parameters:
+        - name: orderId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order details returned
+components:
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+security:
+  - apiKeyHeader: [ ]
+  - apiKeyQuery: [ ]

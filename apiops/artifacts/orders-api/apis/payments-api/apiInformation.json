@@ -1,0 +1,21 @@
+{
+  "properties": {
+    "path": "payments",
+    "apiRevision": "1",
+    "apiRevisionDescription": "",
+    "apiVersionDescription": "",
+    "authenticationSettings": {},
+    "description": "Payments transaction API service",
+    "isCurrent": true,
+    "displayName": "Payments Gateway API",
+    "protocols": [
+      "https"
+    ],
+    "serviceUrl": "https://payments-service.internal.contoso.com/api",
+    "subscriptionKeyParameterNames": {
+      "header": "Ocp-Apim-Subscription-Key",
+      "query": "subscription-key"
+    },
+    "subscriptionRequired": true
+  }
+}
