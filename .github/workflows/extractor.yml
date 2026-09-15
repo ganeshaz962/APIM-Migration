@@ -11,6 +11,10 @@ on:
           - orders-api
           - payments-api
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   extract-from-source-apim:
     uses: ./.github/workflows/ext-reusable.yml
