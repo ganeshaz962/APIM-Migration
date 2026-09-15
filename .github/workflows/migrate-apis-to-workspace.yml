@@ -1,0 +1,65 @@
+name: "Migrate APIs to APIM Workspace"
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_api:
+        description: 'Select API to Migrate'
+        required: true
+        default: 'orders-api'
+        type: choice
+        options:
+          - orders-api
+          - payments-api
+          - all
+      source_rg:
+        description: 'Source Resource Group'
+        required: true
+        default: 'rg-apim-source-migration'
+      source_apim:
+        description: 'Source APIM Name'
+        required: true
+        default: 'apim-source-prem-mig-01'
+      dest_rg:
+        description: 'Destination Resource Group'
+        required: true
+        default: 'rg-apim-dest-migration'
+      dest_apim:
+        description: 'Destination APIM Name'
+        required: true
+        default: 'apim-dest-migration-prem'
+      workspace_id:
+        description: 'Destination Workspace ID'
+        required: true
+        default: 'workspace-core-services'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  run-migration:
+    name: "Execute APIM Migration"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Execute Migration Script
+        shell: pwsh
+        run: |
+          ./scripts/migrate-api.ps1 `
+            -TargetApi "${{ github.event.inputs.target_api }}" `
+            -SourceResourceGroup "${{ github.event.inputs.source_rg }}" `
+            -SourceApimName "${{ github.event.inputs.source_apim }}" `
+            -DestResourceGroup "${{ github.event.inputs.dest_rg }}" `
+            -DestApimName "${{ github.event.inputs.dest_apim }}" `
+            -WorkspaceId "${{ github.event.inputs.workspace_id }}"

@@ -1,0 +1,19 @@
+resource_group_name = "rg-apim-source-migration"
+location            = "Central India"
+apim_name           = "apim-source-prem-mig-01"
+publisher_name      = "Contoso Global Tech"
+publisher_email     = "apim-admin@contoso.com"
+sku_name            = "Premium_1"
+
+api1_backend_url    = "https://orders-service.internal.contoso.com/api"
+api1_secret_key     = "orders-super-secret-key-12345"
+
+api2_backend_url    = "https://payments-service.internal.contoso.com/api"
+api2_secret_key     = "payments-super-secret-token-67890"
+
+tags = {
+  Environment = "Source"
+  Project     = "APIM-Migration"
+  Tier        = "Premium"
+  ManagedBy   = "Terraform"
+}
