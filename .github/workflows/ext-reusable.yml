@@ -32,6 +32,10 @@ on:
       AZURE_CLIENT_SECRET:
         required: true
 
+permissions:
+  contents: write
+  pull-requests: write
+
 env:
   apiops_release_version: v6.0.2-alpha.1.0.2
 
