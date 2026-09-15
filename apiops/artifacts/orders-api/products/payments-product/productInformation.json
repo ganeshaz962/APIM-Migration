@@ -1,0 +1,10 @@
+{
+  "properties": {
+    "displayName": "Payments Product",
+    "description": "Product containing Payments Gateway API",
+    "approvalRequired": false,
+    "state": "published",
+    "subscriptionRequired": true,
+    "terms": ""
+  }
+}
