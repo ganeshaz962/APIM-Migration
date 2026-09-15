@@ -1,14 +1,13 @@
 <#
 .SYNOPSIS
-    Prunes extracted APIOps artifacts down to only the resources belonging to a
-    single target API, so the publisher never pushes an unrelated API into the
-    destination workspace (needed because the extractor's configuration.extractor.yaml
-    API filter is not being honored on the current APIOps release).
+    Prunes extracted APIOps artifacts down to only the target API's own definition
+    (apis/<api>/), removing every other resource kind (backends, named values,
+    products, subscriptions, groups, etc.) since those are migrated separately via
+    the scripts in apim-migrations-scripts/.
 .PARAMETER ArtifactsRootPath
     Root folder containing the extracted APIOps artifacts.
 .PARAMETER TargetApiName
-    The API to keep (e.g. "orders-api" or "payments-api"). All other APIs, and
-    their linked backends/named values/products/subscriptions, are removed.
+    The API to keep (e.g. "orders-api" or "payments-api").
 #>
 
 [CmdletBinding()]
@@ -23,45 +22,28 @@ param (
 
 $ErrorActionPreference = "Stop"
 
-# Maps each API to the sibling resources that belong exclusively to it.
-$apiResourceMap = @{
-    "orders-api" = @{
-        Backends      = @("backend-orders-api")
-        NamedValues   = @("nv-api1-backend-url", "nv-api1-api-key")
-        Products      = @("orders-product")
-        Subscriptions = @("sub-orders-api")
-    }
-    "payments-api" = @{
-        Backends      = @("backend-payments-api")
-        NamedValues   = @("nv-api2-backend-url", "nv-api2-secret-header")
-        Products      = @("payments-product")
-        Subscriptions = @("sub-payments-api")
+# Resource kinds handled by apim-migrations-scripts, not by this publish pipeline.
+$foldersToRemoveEntirely = @(
+    "backends", "named values", "products", "subscriptions",
+    "groups", "tags", "policy fragments", "diagnostics", "version sets", "loggers", "gateways"
+)
+
+foreach ($folderName in $foldersToRemoveEntirely) {
+    $folderPath = Join-Path $ArtifactsRootPath $folderName
+    if (Test-Path $folderPath) {
+        Write-Host "Removing '$folderName' (handled separately via apim-migrations-scripts)"
+        Remove-Item -Path $folderPath -Recurse -Force
     }
 }
 
-$keep = $apiResourceMap[$TargetApiName]
-
-function Remove-UnrelatedChildren {
-    param (
-        [string]$FolderName,
-        [string[]]$NamesToKeep
-    )
-
-    $folderPath = Join-Path $ArtifactsRootPath $FolderName
-    if (-not (Test-Path $folderPath)) { return }
-
-    Get-ChildItem -Path $folderPath -Directory | ForEach-Object {
-        if ($NamesToKeep -notcontains $_.Name) {
-            Write-Host "Removing '$FolderName/$($_.Name)' (not part of $TargetApiName)"
+$apisFolderPath = Join-Path $ArtifactsRootPath "apis"
+if (Test-Path $apisFolderPath) {
+    Get-ChildItem -Path $apisFolderPath -Directory | ForEach-Object {
+        if ($_.Name -ne $TargetApiName) {
+            Write-Host "Removing 'apis/$($_.Name)' (not the target API)"
             Remove-Item -Path $_.FullName -Recurse -Force
         }
     }
 }
 
-Remove-UnrelatedChildren -FolderName "apis" -NamesToKeep @($TargetApiName)
-Remove-UnrelatedChildren -FolderName "backends" -NamesToKeep $keep.Backends
-Remove-UnrelatedChildren -FolderName "named values" -NamesToKeep $keep.NamedValues
-Remove-UnrelatedChildren -FolderName "products" -NamesToKeep $keep.Products
-Remove-UnrelatedChildren -FolderName "subscriptions" -NamesToKeep $keep.Subscriptions
-
-Write-Host "Artifacts pruned to only '$TargetApiName' and its linked resources."
+Write-Host "Artifacts pruned to only the '$TargetApiName' definition."
