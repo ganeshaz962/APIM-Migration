@@ -1,0 +1,5 @@
+# Limits extraction to only the Orders API and its directly-linked artifacts
+# (backend, named values, policies) so it can be migrated to the destination
+# workspace independently of the Payments API.
+apis:
+  - orders-api

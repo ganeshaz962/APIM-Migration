@@ -1,0 +1,25 @@
+name: APIM Migration - Extractor
+on:
+  workflow_dispatch:
+    inputs:
+      target_api:
+        description: 'API to extract from the Source APIM'
+        required: true
+        default: 'orders-api'
+        type: choice
+        options:
+          - orders-api
+          - payments-api
+
+jobs:
+  extract-from-source-apim:
+    uses: ./.github/workflows/ext-reusable.yml
+    with:
+      API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apiops/artifacts/${{ github.event.inputs.target_api }}
+      AZURE_RESOURCE_GROUP_NAME: "rg-apim-source-migration"
+      API_MANAGEMENT_SERVICE_NAME: "apim-source-prem-mig-01"
+      API_SPECIFICATION_FORMAT: "OpenAPIV3Yaml"
+      CONFIGURATION_YAML_PATH: apiops/configuration.extractor.${{ github.event.inputs.target_api }}.yaml
+    secrets:
+      AZURE_CLIENT_ID: "${{ secrets.APIM_MIGRATION_CLIENT_ID }}"
+      AZURE_CLIENT_SECRET: "${{ secrets.APIM_MIGRATION_CLIENT_SECRET }}"

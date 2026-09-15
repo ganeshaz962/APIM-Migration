@@ -1,0 +1,25 @@
+name: APIM Migration - Publisher
+on:
+  workflow_dispatch:
+    inputs:
+      target_api:
+        description: 'API to publish into the Destination APIM Workspace'
+        required: true
+        default: 'orders-api'
+        type: choice
+        options:
+          - orders-api
+          - payments-api
+
+jobs:
+  publish-to-destination-workspace:
+    uses: ./.github/workflows/pub-reusable.yml
+    with:
+      API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apiops/artifacts/${{ github.event.inputs.target_api }}
+      AZURE_RESOURCE_GROUP_NAME: "rg-apim-dest-migration"
+      API_MANAGEMENT_SERVICE_NAME: "apim-dest-migration-prem"
+      API_MANAGEMENT_ENVIRONMENT: "test"
+      TARGET_WORKSPACE_NAME: "workspace-core-services"
+    secrets:
+      AZURE_CLIENT_ID: "${{ secrets.APIM_MIGRATION_CLIENT_ID }}"
+      AZURE_CLIENT_SECRET: "${{ secrets.APIM_MIGRATION_CLIENT_SECRET }}"
