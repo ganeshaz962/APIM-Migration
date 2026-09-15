@@ -21,6 +21,9 @@ jobs:
       API_MANAGEMENT_ENVIRONMENT: "test"
       TARGET_WORKSPACE_NAME: "workspace-core-services"
       TARGET_API_NAME: ${{ github.event.inputs.target_api }}
+      CONFIGURATION_YAML_PATH: "apiops/configuration.test.yaml"
     secrets:
       AZURE_CLIENT_ID: "${{ secrets.APIM_MIGRATION_CLIENT_ID }}"
       AZURE_CLIENT_SECRET: "${{ secrets.APIM_MIGRATION_CLIENT_SECRET }}"
+      ORDERS_API_KEY_VALUE: "${{ secrets.ORDERS_API_KEY_VALUE }}"
+      PAYMENTS_SECRET_HEADER_VALUE: "${{ secrets.PAYMENTS_SECRET_HEADER_VALUE }}"
